@@ -6,8 +6,7 @@ build:
   tags:
     - dotnet
   script:
-    - msbuild Taoyouh.Mphtxt.sln -p:Configuration=Release -t:Restore
-    - msbuild Taoyouh.Mphtxt.sln -p:Configuration=Release -p:Platform=x64
+    - dotnet build Taoyouh.Mphtxt.sln -c Release
   artifacts:
     paths:
       - Taoyouh.Mphtxt/bin
@@ -19,4 +18,4 @@ test:
   tags:
     - dotnet
   script:
-    - dotnet test --no-build --configuration Release .\Taoyouh.Mphtxt.Tests\Ets4.Models.Tests.csproj
+    - dotnet test --no-build --configuration Release Taoyouh.Mphtxt.Tests\Taoyouh.Mphtxt.Tests.csproj
