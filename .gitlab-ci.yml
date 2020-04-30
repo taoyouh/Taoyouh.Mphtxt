@@ -1,0 +1,22 @@
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+
+build:
+  stage: build
+  tags:
+    - dotnet
+  script:
+    - msbuild Taoyouh.Mphtxt.sln -p:Configuration=Release -t:Restore
+    - msbuild Taoyouh.Mphtxt.sln -p:Configuration=Release -p:Platform=x64
+  artifacts:
+    paths:
+      - Taoyouh.Mphtxt/bin
+      - Taoyouh.Mphtxt.Tests/bin
+      - Taoyouh.Mphtxt.Tests/obj
+
+test:
+  stage: test
+  tags:
+    - dotnet
+  script:
+    - dotnet test --no-build --configuration Release .\Taoyouh.Mphtxt.Tests\Ets4.Models.Tests.csproj
