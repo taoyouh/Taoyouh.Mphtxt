@@ -4,10 +4,24 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <CodeAnalysisRuleSet>../StyleRules.ruleset</CodeAnalysisRuleSet>
     <NeutralLanguage>en-US</NeutralLanguage>
+    <PackageLicenseExpression></PackageLicenseExpression>
+    <Authors>Huang, Zhaoquan</Authors>
+    <Company>Huang, Zhaoquan</Company>
+    <PackageProjectUrl>https://github.com/taoyouh/Taoyouh.Mphtxt</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/taoyouh/Taoyouh.Mphtxt.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>mphtxt</PackageTags>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+    <Description>Taoyouh.Mphtxt is a library for parsing mphtxt files exported from COMSOL Multiphysics.</Description>
+    <Copyright>Copyright (c) Huang, Zhaoquan. All rights reserved</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="stylecop.json" />
+    <None Include="..\LICENSE.txt">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
