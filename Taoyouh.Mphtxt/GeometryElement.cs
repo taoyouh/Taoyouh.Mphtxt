@@ -9,7 +9,7 @@ namespace Taoyouh.Mphtxt
     /// <summary>
     /// A mesh element.
     /// </summary>
-    public readonly struct GeometryElement
+    public readonly struct GeometryElement : IEquatable<GeometryElement>
     {
         private readonly Memory<int> entityIndexStorage;
 
@@ -38,5 +38,39 @@ namespace Taoyouh.Mphtxt
         /// </summary>
         /// <param name="i">To get or set the index of i-th node in this element.</param>
         public ref int this[int i] => ref NodesStorage.Span[i];
+
+        public static bool operator ==(GeometryElement left, GeometryElement right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(GeometryElement left, GeometryElement right)
+        {
+            return !(left == right);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is GeometryElement geometryElement)
+            {
+                return Equals(geometryElement);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            return entityIndexStorage.GetHashCode()
+                ^ NodesStorage.GetHashCode();
+        }
+
+        public bool Equals(GeometryElement other)
+        {
+            return entityIndexStorage.Equals(other.entityIndexStorage)
+                && NodesStorage.Equals(other.NodesStorage);
+        }
     }
 }

@@ -15,8 +15,6 @@ namespace Taoyouh.Mphtxt
     {
         private CoordinateCollection _collection = new CoordinateCollection(0, 0);
 
-        private IDictionary<string, GeometryElementCollection> _elements = new Dictionary<string, GeometryElementCollection>();
-
         public MphtxtMesh(CoordinateCollection coordinates, IDictionary<string, GeometryElementCollection> elements)
         {
             Coordinates = coordinates ?? throw new ArgumentNullException(nameof(coordinates));
@@ -33,10 +31,6 @@ namespace Taoyouh.Mphtxt
             set => _collection = value ?? throw new ArgumentNullException(nameof(value));
         }
 
-        public IDictionary<string, GeometryElementCollection> Elements
-        {
-            get => _elements;
-            set => _elements = value ?? throw new NotImplementedException();
-        }
+        public IDictionary<string, GeometryElementCollection> Elements { get; } = new Dictionary<string, GeometryElementCollection>();
     }
 }

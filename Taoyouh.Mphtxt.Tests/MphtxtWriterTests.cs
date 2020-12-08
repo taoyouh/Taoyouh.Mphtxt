@@ -19,7 +19,7 @@ namespace Taoyouh.Mphtxt.Tests
         public void RoundtripTest()
         {
             var mphtxtStream = new MemoryStream();
-            var writer = new MphtxtWriter(mphtxtStream);
+            using var writer = new MphtxtWriter(mphtxtStream);
 
             const int pointCount = 100;
             const int tetCount = 50;
@@ -53,7 +53,7 @@ namespace Taoyouh.Mphtxt.Tests
             writer.Write(objs);
 
             mphtxtStream.Seek(0, SeekOrigin.Begin);
-            var reader = new MphtxtReader(mphtxtStream);
+            using var reader = new MphtxtReader(mphtxtStream);
             reader.Read();
         }
     }
