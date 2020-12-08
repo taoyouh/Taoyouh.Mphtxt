@@ -8,6 +8,9 @@ using System.Text;
 
 namespace Taoyouh.Mphtxt
 {
+    /// <summary>
+    /// An mphtxt mesh object that contains node coordinates and elements.
+    /// </summary>
     public class MphtxtMesh : MphtxtObject
     {
         public MphtxtMesh(CoordinateCollection coordinates, IDictionary<string, GeometryElementCollection> elements)

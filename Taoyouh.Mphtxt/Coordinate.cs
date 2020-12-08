@@ -6,6 +6,9 @@ using System;
 
 namespace Taoyouh.Mphtxt
 {
+    /// <summary>
+    /// The position of a mesh node.
+    /// </summary>
     public class Coordinate
     {
         private readonly CoordinateCollection parent;
@@ -17,6 +20,9 @@ namespace Taoyouh.Mphtxt
             this.index = index;
         }
 
+        /// <summary>
+        /// Gets or sets a coordinate value of the node mesh.
+        /// </summary>
         public double this[int i]
         {
             get => parent.Storage[(index * parent.Dimension) + i];

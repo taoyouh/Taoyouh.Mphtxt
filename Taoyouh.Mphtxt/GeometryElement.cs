@@ -6,6 +6,9 @@ using System;
 
 namespace Taoyouh.Mphtxt
 {
+    /// <summary>
+    /// A mesh element.
+    /// </summary>
     public class GeometryElement
     {
         private GeometryElementCollection parent;
@@ -18,7 +21,7 @@ namespace Taoyouh.Mphtxt
         }
 
         /// <summary>
-        /// Thie index of item that the elelemt belongs to.
+        /// The index of the geometry entity (e.g. a cube) that the element (e.g. a tetrahedron) belongs to.
         /// </summary>
         public int EntityIndex
         {
@@ -27,7 +30,7 @@ namespace Taoyouh.Mphtxt
         }
 
         /// <summary>
-        /// The index of points that the element has.
+        /// The index of points (e.g. vertices of a tetrahedron) that the element has.
         /// </summary>
         /// <param name="i">To get or set the index of i-th node in this element.</param>
         public int this[int i]

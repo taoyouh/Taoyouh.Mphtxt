@@ -8,6 +8,11 @@ using System.Text;
 
 namespace Taoyouh.Mphtxt
 {
+    /// <summary>
+    /// The base class of an mphtxt object.
+    /// </summary>
+    /// <seealso cref="MphtxtMesh"/>
+    /// <seealso cref="MphtxtSelection"/>
     public abstract class MphtxtObject
     {
     }

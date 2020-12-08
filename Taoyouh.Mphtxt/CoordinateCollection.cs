@@ -8,6 +8,9 @@ using System.Collections.Generic;
 
 namespace Taoyouh.Mphtxt
 {
+    /// <summary>
+    /// A collection of mesh node coordinates.
+    /// </summary>
     public class CoordinateCollection : IEnumerable<Coordinate>
     {
         public CoordinateCollection(int dimension, int count)
@@ -17,12 +20,21 @@ namespace Taoyouh.Mphtxt
             Storage = new double[dimension * count];
         }
 
+        /// <summary>
+        /// Gets the dimension of mesh nodes.
+        /// </summary>
         public int Dimension { get; }
 
+        /// <summary>
+        /// Gets the number of mesh nodes.
+        /// </summary>
         public int Count { get; }
 
         internal double[] Storage { get; }
 
+        /// <summary>
+        /// Gets the coordinates of a mesh node.
+        /// </summary>
         public Coordinate this[int index]
         {
             get => new Coordinate(this, index);

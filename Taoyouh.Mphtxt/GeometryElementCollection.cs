@@ -8,6 +8,9 @@ using System.Collections.Generic;
 
 namespace Taoyouh.Mphtxt
 {
+    /// <summary>
+    /// A collection of mesh elements.
+    /// </summary>
     public class GeometryElementCollection : IEnumerable<GeometryElement>
     {
         public GeometryElementCollection(int count, int elementNodeCount)
@@ -19,14 +22,23 @@ namespace Taoyouh.Mphtxt
             NodesStorage = new int[count * elementNodeCount];
         }
 
+        /// <summary>
+        /// The number of elements in the collection.
+        /// </summary>
         public int Count { get; }
 
+        /// <summary>
+        /// The number of nodes in each element.
+        /// </summary>
         public int ElementNodeCount { get; }
 
         internal int[] EntityIndexStorage { get; }
 
         internal int[] NodesStorage { get; }
 
+        /// <summary>
+        /// Gets a mesh element.
+        /// </summary>
         public GeometryElement this[int index] => new GeometryElement(this, index);
 
         public IEnumerator<GeometryElement> GetEnumerator() => new Enumerator(this);
