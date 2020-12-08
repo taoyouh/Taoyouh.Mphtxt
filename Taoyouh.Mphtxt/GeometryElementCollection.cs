@@ -39,7 +39,10 @@ namespace Taoyouh.Mphtxt
         /// <summary>
         /// Gets a mesh element.
         /// </summary>
-        public GeometryElement this[int index] => new GeometryElement(this, index);
+        public GeometryElement this[int index]
+            => new GeometryElement(
+                new Memory<int>(EntityIndexStorage, index, 1),
+                new Memory<int>(NodesStorage, index * ElementNodeCount, ElementNodeCount));
 
         public IEnumerator<GeometryElement> GetEnumerator() => new Enumerator(this);
 

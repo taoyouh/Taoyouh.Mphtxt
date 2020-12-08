@@ -37,7 +37,7 @@ namespace Taoyouh.Mphtxt
         /// </summary>
         public Coordinate this[int index]
         {
-            get => new Coordinate(this, index);
+            get => new Coordinate(new Memory<double>(Storage, index * Dimension, Dimension));
         }
 
         public IEnumerator<Coordinate> GetEnumerator() => new Enumerator(this);

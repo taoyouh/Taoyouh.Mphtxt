@@ -24,21 +24,21 @@ namespace Taoyouh.Mphtxt
         /// <summary>
         /// The label (the display name defined in COMSOL) of the selection.
         /// </summary>
-        public string Label { get; }
+        public string Label { get; set; }
 
         /// <summary>
         /// The tag (key) of the mesh that this selection corresponds to.
         /// </summary>
-        public string MeshTag { get; }
+        public string MeshTag { get; set; }
 
         /// <summary>
         /// The dimension of the selection.
         /// </summary>
-        public double Dimension { get; }
+        public double Dimension { get; set; }
 
         /// <summary>
         /// The indices of entities in this selection.
         /// </summary>
-        public IEnumerable<int> Entities { get; }
+        public IEnumerable<int> Entities { get; set; }
     }
 }

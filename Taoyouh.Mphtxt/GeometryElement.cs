@@ -9,34 +9,34 @@ namespace Taoyouh.Mphtxt
     /// <summary>
     /// A mesh element.
     /// </summary>
-    public class GeometryElement
+    public readonly struct GeometryElement
     {
-        private GeometryElementCollection parent;
-        private int index;
+        private readonly Memory<int> entityIndexStorage;
 
-        internal GeometryElement(GeometryElementCollection parent, int index)
+        public GeometryElement(Memory<int> entityIndexStorage, Memory<int> nodesStorage)
         {
-            this.parent = parent ?? throw new ArgumentNullException(nameof(parent));
-            this.index = index;
+            this.entityIndexStorage = entityIndexStorage;
+            this.NodesStorage = nodesStorage;
+        }
+
+        public GeometryElement(int nodesPerElement)
+        {
+            var array = new int[nodesPerElement + 1];
+            this.entityIndexStorage = new Memory<int>(array, 0, 1);
+            this.NodesStorage = new Memory<int>(array, 1, nodesPerElement);
         }
 
         /// <summary>
         /// The index of the geometry entity (e.g. a cube) that the element (e.g. a tetrahedron) belongs to.
         /// </summary>
-        public int EntityIndex
-        {
-            get => parent.EntityIndexStorage[index];
-            set => parent.EntityIndexStorage[index] = value;
-        }
+        public ref int EntityIndex => ref entityIndexStorage.Span[0];
+
+        internal Memory<int> NodesStorage { get; }
 
         /// <summary>
         /// The index of points (e.g. vertices of a tetrahedron) that the element has.
         /// </summary>
         /// <param name="i">To get or set the index of i-th node in this element.</param>
-        public int this[int i]
-        {
-            get => parent.NodesStorage[(parent.ElementNodeCount * index) + i];
-            set => parent.NodesStorage[(parent.ElementNodeCount * index) + i] = value;
-        }
+        public ref int this[int i] => ref NodesStorage.Span[i];
     }
 }

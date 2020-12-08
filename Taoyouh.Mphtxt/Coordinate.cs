@@ -3,30 +3,33 @@
 // </copyright>
 
 using System;
+using System.Buffers;
 
 namespace Taoyouh.Mphtxt
 {
     /// <summary>
     /// The position of a mesh node.
     /// </summary>
-    public class Coordinate
+    public readonly struct Coordinate
     {
-        private readonly CoordinateCollection parent;
-        private readonly int index;
-
-        internal Coordinate(CoordinateCollection parent, int index)
+        public Coordinate(Memory<double> storage)
         {
-            this.parent = parent ?? throw new ArgumentNullException(nameof(parent));
-            this.index = index;
+            this.Storage = storage;
         }
+
+        public Coordinate(int length)
+        {
+            this.Storage = new Memory<double>(new double[length], 0, length);
+        }
+
+        internal Memory<double> Storage { get; }
 
         /// <summary>
         /// Gets or sets a coordinate value of the node mesh.
         /// </summary>
-        public double this[int i]
+        public ref double this[int i]
         {
-            get => parent.Storage[(index * parent.Dimension) + i];
-            set => parent.Storage[(index * parent.Dimension) + i] = value;
+            get => ref Storage.Span[i];
         }
     }
 }
