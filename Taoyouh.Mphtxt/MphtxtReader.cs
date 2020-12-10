@@ -3,6 +3,7 @@
 // </copyright>
 
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -38,7 +39,8 @@ namespace Taoyouh.Mphtxt
         /// <returns>The dictionary that maps object tag to object content.</returns>
         public IDictionary<string, MphtxtObject> Read()
         {
-            var version = ReadInts(2);
+            Span<int> version = stackalloc int[2];
+            ReadInts(version);
 
             var tagCount = ReadInt();
             string[] tags = new string[tagCount];
@@ -79,14 +81,30 @@ namespace Taoyouh.Mphtxt
             return int.Parse(line, CultureInfo.InvariantCulture);
         }
 
-        private int[] ReadInts(int count)
+        private void ReadInts(Span<int> buffer)
         {
-            return ReadNumbersInString(count).Select(x => int.Parse(x, CultureInfo.InvariantCulture)).ToArray();
+            using (var stringsMemory = MemoryPool<ReadOnlyMemory<char>>.Shared.Rent(buffer.Length))
+            {
+                var stringsSpan = stringsMemory.Memory.Span.Slice(0, buffer.Length);
+                ReadNumbersInString(stringsSpan);
+                for (int i = 0; i < buffer.Length; ++i)
+                {
+                    buffer[i] = ParseInt(stringsSpan[i].Span);
+                }
+            }
         }
 
-        private double[] ReadDoubles(int count)
+        private void ReadDoubles(Span<double> buffer)
         {
-            return ReadNumbersInString(count).Select(x => double.Parse(x, CultureInfo.InvariantCulture)).ToArray();
+            using (var stringsMemory = MemoryPool<ReadOnlyMemory<char>>.Shared.Rent(buffer.Length))
+            {
+                var stringsSpan = stringsMemory.Memory.Span.Slice(0, buffer.Length);
+                ReadNumbersInString(stringsSpan);
+                for (int i = 0; i < buffer.Length; ++i)
+                {
+                    buffer[i] = ParseDouble(stringsSpan[i].Span);
+                }
+            }
         }
 
         private string[] ReadNumbersInString(int intCount)
@@ -104,6 +122,100 @@ namespace Taoyouh.Mphtxt
             }
 
             return numStrs;
+        }
+
+        private void ReadNumbersInString(Span<ReadOnlyMemory<char>> buffer)
+        {
+            string line = ReadLine();
+            if (line == null)
+            {
+                throw new EndOfStreamException($"Expected content at line {lineId}.");
+            }
+
+            int segmentIndex = 0;
+            int charIndex = 0;
+            var chars = line.AsMemory();
+            for (int i = 0; i < line.Length; ++i)
+            {
+                if (line[i] == ' ')
+                {
+                    if (i != charIndex)
+                    {
+                        if (segmentIndex >= buffer.Length)
+                        {
+                            throw new InvalidDataException(
+                                $"Number format incorrect at line {lineId}. Expected {buffer.Length} numbers but has got more.");
+                        }
+
+                        buffer[segmentIndex] = chars.Slice(charIndex, i - charIndex);
+                    }
+
+                    ++segmentIndex;
+                    charIndex = i + 1;
+                }
+            }
+
+            if (segmentIndex != buffer.Length)
+            {
+                throw new InvalidDataException($"Number format incorrect at line {lineId}. Expected {buffer.Length} numbers but there are only {segmentIndex}");
+            }
+        }
+
+        private int ParseInt(ReadOnlySpan<char> intString)
+        {
+#if NETSTANDARD2_1
+            if (int.TryParse(intString, NumberStyles.Integer, CultureInfo.InvariantCulture, out int result))
+            {
+                return result;
+            }
+            else
+            {
+                throw new FormatException(string.Format(
+                    CultureInfo.CurrentCulture,
+                    "Cannot parse string \"{0}\" at line {1} into an integer.",
+                    intString.ToString(),
+                    lineId));
+            }
+#else
+            int result = 0;
+            foreach (char c in intString)
+            {
+                if (c >= '0' && c <= '9')
+                {
+                    result = (result * 10) + (c - '0');
+                }
+                else
+                {
+                    throw new FormatException(string.Format(
+                        CultureInfo.CurrentCulture,
+                        "Cannot parse string \"{0}\" at line {1} into an integer.",
+                        intString.ToString(),
+                        lineId));
+                }
+            }
+
+            return result;
+#endif
+        }
+
+        private double ParseDouble(ReadOnlySpan<char> doubleString)
+        {
+#if NETSTANDARD2_1
+            if (double.TryParse(doubleString, NumberStyles.Float, CultureInfo.InvariantCulture, out double result))
+#else
+            if (double.TryParse(doubleString.ToString(), NumberStyles.Float, CultureInfo.InvariantCulture, out double result))
+#endif
+            {
+                return result;
+            }
+            else
+            {
+                throw new FormatException(string.Format(
+                    CultureInfo.CurrentCulture,
+                    "Cannot parse string \"{0}\" at line {1} into a floating-point number.",
+                    doubleString.ToString(),
+                    lineId));
+            }
         }
 
         private string ReadString()
@@ -143,7 +255,9 @@ namespace Taoyouh.Mphtxt
 
         private MphtxtObject ReadObject()
         {
-            ReadInts(3);
+            Span<int> temp = stackalloc int[3];
+            ReadInts(temp);
+
             var @class = ReadString();
             switch (@class)
             {
@@ -171,11 +285,7 @@ namespace Taoyouh.Mphtxt
             var coordinates = new CoordinateCollection(dimension, meshPointCount);
             for (int i = 0; i < meshPointCount; i++)
             {
-                var values = ReadDoubles(dimension);
-                for (int j = 0; j < dimension; ++j)
-                {
-                    coordinates[i][j] = values[j];
-                }
+                ReadDoubles(coordinates[i].Storage.Span);
             }
 
             var elementTypeCount = ReadInt();
@@ -190,10 +300,10 @@ namespace Taoyouh.Mphtxt
                 geometryElements[typeName] = elements;
                 for (int i = 0; i < elementCount; i++)
                 {
-                    var values = ReadInts(nodePerEle).Select(x => x - lowestMeshPointIndex).ToArray();
+                    ReadInts(elements[i].NodesStorage.Span);
                     for (int j = 0; j < nodePerEle; ++j)
                     {
-                        elements[i][j] = values[j];
+                        elements[i][j] -= lowestMeshPointIndex;
                     }
                 }
 
