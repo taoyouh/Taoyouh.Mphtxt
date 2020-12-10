@@ -13,7 +13,16 @@ namespace Taoyouh.Mphtxt
     /// </summary>
     public class MphtxtSelection : MphtxtObject
     {
-        public MphtxtSelection(string label, string meshTag, double dimension, IEnumerable<int> entities)
+        private string _label;
+        private string _meshTag;
+        private int _dimension;
+        private IEnumerable<int> _entities;
+
+        public MphtxtSelection()
+        {
+        }
+
+        public MphtxtSelection(string label, string meshTag, int dimension, IEnumerable<int> entities)
         {
             Label = label ?? throw new ArgumentNullException(nameof(label));
             MeshTag = meshTag ?? throw new ArgumentNullException(nameof(meshTag));
@@ -24,21 +33,37 @@ namespace Taoyouh.Mphtxt
         /// <summary>
         /// The label (the display name defined in COMSOL) of the selection.
         /// </summary>
-        public string Label { get; set; }
+        public string Label
+        {
+            get => _label;
+            set => _label = value ?? throw new ArgumentNullException(nameof(value));
+        }
 
         /// <summary>
         /// The tag (key) of the mesh that this selection corresponds to.
         /// </summary>
-        public string MeshTag { get; set; }
+        public string MeshTag
+        {
+            get => _meshTag;
+            set => _meshTag = value ?? throw new ArgumentNullException(nameof(value));
+        }
 
         /// <summary>
         /// The dimension of the selection.
         /// </summary>
-        public double Dimension { get; set; }
+        public int Dimension
+        {
+            get => _dimension;
+            set => _dimension = value;
+        }
 
         /// <summary>
         /// The indices of entities in this selection.
         /// </summary>
-        public IEnumerable<int> Entities { get; set; }
+        public IEnumerable<int> Entities
+        {
+            get => _entities;
+            set => _entities = value ?? throw new ArgumentNullException(nameof(value));
+        }
     }
 }

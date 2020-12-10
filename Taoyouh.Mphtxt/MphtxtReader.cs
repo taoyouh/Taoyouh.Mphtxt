@@ -18,14 +18,14 @@ namespace Taoyouh.Mphtxt
         private readonly StreamReader reader;
         private int lineId = 0;
 
-        public MphtxtReader(Stream stream)
+        public MphtxtReader(Stream stream, bool leaveOpen = false)
         {
             if (stream == null)
             {
                 throw new ArgumentNullException(nameof(stream));
             }
 
-            reader = new StreamReader(stream);
+            reader = new StreamReader(stream, Encoding.UTF8, false, 1024, leaveOpen);
         }
 
         public void Dispose()
@@ -78,7 +78,7 @@ namespace Taoyouh.Mphtxt
                 throw new EndOfStreamException($"Expected content at line {lineId}.");
             }
 
-            return int.Parse(line, CultureInfo.InvariantCulture);
+            return ParseInt(line.AsSpan());
         }
 
         private void ReadInts(Span<int> buffer)

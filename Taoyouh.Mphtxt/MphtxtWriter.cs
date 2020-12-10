@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace Taoyouh.Mphtxt
@@ -13,14 +14,14 @@ namespace Taoyouh.Mphtxt
     {
         private readonly StreamWriter writer;
 
-        public MphtxtWriter(Stream stream)
+        public MphtxtWriter(Stream stream, bool leaveOpen = false)
         {
             if (stream == null)
             {
                 throw new ArgumentNullException(nameof(stream));
             }
 
-            writer = new StreamWriter(stream);
+            writer = new StreamWriter(stream, new UTF8Encoding(), 1024, leaveOpen);
         }
 
         public void Dispose()
@@ -152,7 +153,27 @@ namespace Taoyouh.Mphtxt
 
         private void WriteSelection(MphtxtSelection selection)
         {
-            throw new NotImplementedException();
+            Span<int> maybeVersion = stackalloc int[3]
+            {
+                0,
+                0,
+                1,
+            };
+            WriteInts(maybeVersion);
+
+            var @class = "Selection";
+            WriteString(@class);
+
+            var version = 0;
+            WriteInt(version);
+            WriteString(selection.Label);
+            WriteString(selection.MeshTag);
+            WriteInt(selection.Dimension);
+            WriteInt(selection.Entities.Count());
+            foreach (var item in selection.Entities)
+            {
+                WriteInt(item);
+            }
         }
     }
 }
