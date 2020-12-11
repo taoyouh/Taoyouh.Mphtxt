@@ -226,8 +226,9 @@ namespace Taoyouh.Mphtxt
                 throw new EndOfStreamException();
             }
 
-            int length = int.Parse(line.Substring(0, line.IndexOf(' ')), CultureInfo.InvariantCulture);
-            var bytes = Encoding.UTF8.GetBytes(line.Substring(line.IndexOf(' ') + 1));
+            var spaceIndex = line.IndexOf(" ", StringComparison.Ordinal);
+            int length = int.Parse(line.Substring(0, spaceIndex), CultureInfo.InvariantCulture);
+            var bytes = Encoding.UTF8.GetBytes(line.Substring(spaceIndex + 1));
             return Encoding.UTF8.GetString(bytes, 0, length).Trim('\0');
         }
 
@@ -237,9 +238,10 @@ namespace Taoyouh.Mphtxt
             while ((line = reader.ReadLine()) != null)
             {
                 ++lineId;
-                if (line.Contains("#"))
+                var commentIndex = line.IndexOf("#", StringComparison.Ordinal);
+                if (commentIndex >= 0)
                 {
-                    line = line.Substring(0, line.IndexOf('#'));
+                    line = line.Substring(0, commentIndex);
                 }
 
                 if (string.IsNullOrWhiteSpace(line))
