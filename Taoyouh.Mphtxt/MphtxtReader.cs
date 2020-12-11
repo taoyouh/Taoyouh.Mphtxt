@@ -13,11 +13,19 @@ using Taoyouh.Mphtxt.Resources;
 
 namespace Taoyouh.Mphtxt
 {
+    /// <summary>
+    /// A reader that parses an mphtxt file.
+    /// </summary>
     public sealed class MphtxtReader : IDisposable
     {
         private readonly StreamReader reader;
         private int lineId = 0;
 
+        /// <summary>
+        /// Initialzes an instance of <see cref="MphtxtReader"/>.
+        /// </summary>
+        /// <param name="stream">The stream to read from.</param>
+        /// <param name="leaveOpen">Whether <paramref name="stream"/> should be left open when the reader is disposed of.</param>
         public MphtxtReader(Stream stream, bool leaveOpen = false)
         {
             if (stream == null)
@@ -28,6 +36,7 @@ namespace Taoyouh.Mphtxt
             reader = new StreamReader(stream, Encoding.UTF8, false, 1024, leaveOpen);
         }
 
+        /// <inheritdoc/>
         public void Dispose()
         {
             reader.Dispose();

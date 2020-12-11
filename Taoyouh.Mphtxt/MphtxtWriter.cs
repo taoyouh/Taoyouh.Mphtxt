@@ -10,10 +10,18 @@ using System.Text;
 
 namespace Taoyouh.Mphtxt
 {
+    /// <summary>
+    /// A writer that writes an mphtxt file.
+    /// </summary>
     public sealed class MphtxtWriter : IDisposable
     {
         private readonly StreamWriter writer;
 
+        /// <summary>
+        /// Initializes an instance of <see cref="MphtxtWriter"/>.
+        /// </summary>
+        /// <param name="stream">The stream to write into.</param>
+        /// <param name="leaveOpen">Whether <paramref name="stream"/> should be left open when this writer is disposed of.</param>
         public MphtxtWriter(Stream stream, bool leaveOpen = false)
         {
             if (stream == null)
@@ -24,11 +32,18 @@ namespace Taoyouh.Mphtxt
             writer = new StreamWriter(stream, new UTF8Encoding(), 1024, leaveOpen);
         }
 
+        /// <inheritdoc/>
         public void Dispose()
         {
             writer.Dispose();
         }
 
+        /// <summary>
+        /// Writes the objects into the stream.
+        /// </summary>
+        /// <param name="objects">
+        /// The objects (e.g. <see cref="MphtxtMesh"/>, <see cref="MphtxtSelection"/>) to be written.
+        /// </param>
         public void Write(IDictionary<string, MphtxtObject> objects)
         {
             if (objects == null)

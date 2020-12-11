@@ -18,10 +18,20 @@ namespace Taoyouh.Mphtxt
         private int _dimension;
         private IEnumerable<int> _entities;
 
+        /// <summary>
+        /// Initialzes an instance of <see cref="MphtxtSelection"/>.
+        /// </summary>
         public MphtxtSelection()
         {
         }
 
+        /// <summary>
+        /// Initializes an instance of <see cref="MphtxtSelection"/>.
+        /// </summary>
+        /// <param name="label">The label of the selection.</param>
+        /// <param name="meshTag">The tag of mesh referred by the selection.</param>
+        /// <param name="dimension">The dimension of geometry entities in this selection.</param>
+        /// <param name="entities">The indices of entities in this selection.</param>
         public MphtxtSelection(string label, string meshTag, int dimension, IEnumerable<int> entities)
         {
             Label = label ?? throw new ArgumentNullException(nameof(label));

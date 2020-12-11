@@ -16,6 +16,10 @@
     <Copyright>Copyright (c) Huang, Zhaoquan. All rights reserved</Copyright>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Include="..\LICENSE.txt">
       <Pack>True</Pack>
