@@ -1,11 +1,15 @@
-﻿using System;
+﻿// <copyright file="Program.cs" company="Huang, Zhaoquan">
+// Copyright (c) Huang, Zhaoquan. All rights reserved.
+// </copyright>
+
+using System;
 using BenchmarkDotNet.Running;
 
 namespace Taoyouh.Mphtxt.Benchmarks
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             var summary = BenchmarkRunner.Run<ReaderBenchmark>();
         }

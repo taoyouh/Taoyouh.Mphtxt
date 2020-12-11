@@ -1,3 +1,7 @@
+﻿// <copyright file="ReaderBenchmark.cs" company="Huang, Zhaoquan">
+// Copyright (c) Huang, Zhaoquan. All rights reserved.
+// </copyright>
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,13 +14,13 @@ namespace Taoyouh.Mphtxt.Benchmarks
     [EventPipeProfiler(EventPipeProfile.CpuSampling)]
     public class ReaderBenchmark
     {
-        private Stream mphtxtStream;
+        private MemoryStream mphtxtStream;
 
         [GlobalSetup]
         public void GlobalSetup()
         {
             mphtxtStream = new MemoryStream();
-            var writer = new MphtxtWriter(mphtxtStream);
+            using var writer = new MphtxtWriter(mphtxtStream, true);
 
             const int pointCount = 1000000;
             const int tetCount = 500000;
@@ -59,7 +63,7 @@ namespace Taoyouh.Mphtxt.Benchmarks
         [Benchmark]
         public IDictionary<string, MphtxtObject> Read()
         {
-            var reader = new MphtxtReader(mphtxtStream);
+            using var reader = new MphtxtReader(mphtxtStream, true);
             return reader.Read();
         }
     }
