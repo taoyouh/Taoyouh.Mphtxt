@@ -65,7 +65,6 @@ namespace Taoyouh.Mphtxt
         /// <param name="left">One instance of <see cref="GeometryElement"/>.</param>
         /// <param name="right">Another instance of <see cref="GeometryElement"/>.</param>
         /// <returns>Whether the two instances are unequal.</returns>
-
         public static bool operator !=(GeometryElement left, GeometryElement right)
         {
             return !(left == right);
