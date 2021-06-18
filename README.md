@@ -1,12 +1,19 @@
 # Taoyouh.Mphtxt
 
-Taoyouh.Mphtxt is a .NET library for parsing mphtxt (COMSOL mesh) files.
+Taoyouh.Mphtxt is a .NET library for parsing and writing mphtxt (COMSOL mesh) files.
 
 ## Features
 - Parse all types of elements (vertex, edge, triangle, tetrahedron, hexahedron, etc.)
 - Parse selections exported from COMSOL 5.4 or higher
 - Parse multiple meshes
+- Write mphtxt files
 - Support .NET Standard 2.0 (can run on .NET Core and .NET Framework)
+
+## Latest changes
+Changes from 1.0.0 to 1.1.0:
+- Add XML documentation
+- Improve performance with the use of spans
+- Add mphtxt writer
 
 ## Usage
 The library is available on [nuget](https://www.nuget.org/packages/Taoyouh.Mphtxt/). Just search for "Taoyouh.Mphtxt" in Visual Studio NuGet package manager and install the latest version. To install using dotnet CLI, use the following command:
@@ -32,3 +39,6 @@ using (var reader = new MphtxtReader(stream))
     var mesh1 = result["mesh1"] as MphtxtMesh;
 }
 ```
+
+## Documentation
+The APIs have XML documentation which can be accessed in IntelliSense popups, object browser and the "go to definition" panel.

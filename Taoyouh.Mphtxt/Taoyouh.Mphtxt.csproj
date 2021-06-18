@@ -12,13 +12,17 @@
     <RepositoryType>git</RepositoryType>
     <PackageTags>mphtxt</PackageTags>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
-    <Description>Taoyouh.Mphtxt is a library for parsing mphtxt files exported from COMSOL Multiphysics.</Description>
+    <Description>Taoyouh.Mphtxt is a .NET library for parsing and writing mphtxt (COMSOL mesh) files.</Description>
     <Copyright>Copyright (c) Huang, Zhaoquan. All rights reserved</Copyright>
   </PropertyGroup>
 
   <PropertyGroup>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
-    <Version>1.1.0-rc</Version>
+    <Version>1.1.0</Version>
+    <PackageReleaseNotes>Changes from 1.0.0 to 1.1.0:
+- Add XML documentation
+- Improve performance with the use of spans
+- Add mphtxt writer</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
