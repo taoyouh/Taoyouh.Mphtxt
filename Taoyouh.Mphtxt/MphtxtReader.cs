@@ -311,7 +311,7 @@ namespace Taoyouh.Mphtxt
                 geometryElements[typeName] = elements;
                 for (int i = 0; i < elementCount; i++)
                 {
-                    ReadInts(elements[i].NodesStorage.Span);
+                    ReadInts(elements[i].AsSpan());
                     for (int j = 0; j < nodePerEle; ++j)
                     {
                         elements[i][j] -= lowestMeshPointIndex;

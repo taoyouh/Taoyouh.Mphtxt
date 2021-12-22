@@ -12,6 +12,7 @@ namespace Taoyouh.Mphtxt
     public readonly struct GeometryElement : IEquatable<GeometryElement>
     {
         private readonly Memory<int> entityIndexStorage;
+        private readonly Memory<int> nodesStorage;
 
         /// <summary>
         /// Initializes an instance of <see cref="GeometryElement"/>.
@@ -21,7 +22,7 @@ namespace Taoyouh.Mphtxt
         public GeometryElement(Memory<int> entityIndexStorage, Memory<int> nodesStorage)
         {
             this.entityIndexStorage = entityIndexStorage;
-            this.NodesStorage = nodesStorage;
+            this.nodesStorage = nodesStorage;
         }
 
         /// <summary>
@@ -32,7 +33,7 @@ namespace Taoyouh.Mphtxt
         {
             var array = new int[nodesPerElement + 1];
             this.entityIndexStorage = new Memory<int>(array, 0, 1);
-            this.NodesStorage = new Memory<int>(array, 1, nodesPerElement);
+            this.nodesStorage = new Memory<int>(array, 1, nodesPerElement);
         }
 
         /// <summary>
@@ -40,13 +41,11 @@ namespace Taoyouh.Mphtxt
         /// </summary>
         public ref int EntityIndex => ref entityIndexStorage.Span[0];
 
-        internal Memory<int> NodesStorage { get; }
-
         /// <summary>
         /// The index of points (e.g. vertices of a tetrahedron) that the element has.
         /// </summary>
         /// <param name="i">To get or set the index of i-th node in this element.</param>
-        public ref int this[int i] => ref NodesStorage.Span[i];
+        public ref int this[int i] => ref nodesStorage.Span[i];
 
         /// <summary>
         /// Whether <paramref name="left"/> and <paramref name="right"/> references the same area of memory.
@@ -88,7 +87,7 @@ namespace Taoyouh.Mphtxt
         public override int GetHashCode()
         {
             return entityIndexStorage.GetHashCode()
-                ^ NodesStorage.GetHashCode();
+                ^ nodesStorage.GetHashCode();
         }
 
         /// <inheritdoc/>
@@ -96,7 +95,19 @@ namespace Taoyouh.Mphtxt
         public bool Equals(GeometryElement other)
         {
             return entityIndexStorage.Equals(other.entityIndexStorage)
-                && NodesStorage.Equals(other.NodesStorage);
+                && nodesStorage.Equals(other.nodesStorage);
         }
+
+        /// <summary>
+        /// Returns the node indices as a <see cref="Memory{T}"/>.
+        /// </summary>
+        /// <returns>The <see cref="Memory{T}"/> storing the node indices.</returns>
+        public Memory<int> AsMemory() => nodesStorage;
+
+        /// <summary>
+        /// Returns the node indices as a <see cref="Span{T}"/>.
+        /// </summary>
+        /// <returns>The <see cref="Span{T}"/> storing the node indices.</returns>
+        public Span<int> AsSpan() => nodesStorage.Span;
     }
 }

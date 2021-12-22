@@ -155,7 +155,7 @@ namespace Taoyouh.Mphtxt
                 WriteInt(elementType.Value.Count);
                 foreach (var element in elementType.Value)
                 {
-                    WriteInts(element.NodesStorage.Span);
+                    WriteInts(element.AsSpan());
                 }
 
                 WriteInt(elementType.Value.Count);
