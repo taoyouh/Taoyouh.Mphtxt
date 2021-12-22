@@ -14,12 +14,20 @@
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <Description>Taoyouh.Mphtxt is a .NET library for parsing and writing mphtxt (COMSOL mesh) files.</Description>
     <Copyright>Copyright (c) Huang, Zhaoquan. All rights reserved</Copyright>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
   </PropertyGroup>
 
   <PropertyGroup>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
-    <Version>1.1.0</Version>
-    <PackageReleaseNotes>Changes from 1.0.0 to 1.1.0:
+    <Version>1.2.0</Version>
+    <PackageReleaseNotes>Changes from 1.1.0 to 1.2.0:
+- Add AsSpan() and AsMemory() methods to access geometry element node indices storages as Memory&lt;T&gt; or Span&lt;T&gt;
+- Add source link support to improve debugging experience
+
+Changes from 1.0.0 to 1.1.0:
 - Add XML documentation
 - Improve performance with the use of spans
 - Add mphtxt writer</PackageReleaseNotes>
@@ -42,6 +50,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
     <PackageReference Include="System.Memory" Version="4.5.4" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All"/>
   </ItemGroup>
 
   <ItemGroup>

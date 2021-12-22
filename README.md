@@ -10,6 +10,10 @@ Taoyouh.Mphtxt is a .NET library for parsing and writing mphtxt (COMSOL mesh) fi
 - Support .NET Standard 2.0 (can run on .NET Core and .NET Framework)
 
 ## Latest changes
+Changes from 1.1.0 to 1.2.0:
+- Add AsSpan() and AsMemory() methods to access geometry element node indices storages as Memory<T> or Span<T>
+- Add source link support to improve debugging experience
+
 Changes from 1.0.0 to 1.1.0:
 - Add XML documentation
 - Improve performance with the use of spans
